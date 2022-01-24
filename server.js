@@ -6,14 +6,14 @@ const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password:  '...',
+  password:  'Tau-40K-1701',
   database: 'employee_db'
 });
 
 connection.connect(function(err) {
   if (err) throw err
   console.log("Connected as Id" + connection.threadId)
-  startPrompt();
+  options();
 });
 
 function options() {
