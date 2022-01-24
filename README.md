@@ -20,7 +20,8 @@
   ## Usage:
   Use to keep your companies Human Resources organized.
 
-  ## License:
+  ## Video:
+  Video Link: https://drive.google.com/file/d/1-CNI1KDpea22nUy8c8L0ArRhZaaDQeAg/view?usp=sharing
   
 
   ## Contribution:
