@@ -26,6 +26,7 @@ function options() {
       'View all departments',
       'View all employees by department',
       'View all roles',
+      'View budget',
       'Add an employee',
       'Add a department',
       'Add a role',
@@ -49,6 +50,9 @@ function options() {
             break;
           case 'View all employees by department':
             employeeDepartment ();
+            break;
+          case 'View budget':
+            viewBudget ();
             break;
           case 'Add an employee':
             addEmployee();
@@ -460,6 +464,23 @@ function deleteEmployee() {
     });
   });
  });
+};
+
+function viewBudget () {
+  console.log('Showing budget by department...\n');
+
+  const sql = `SELECT department_id AS id, 
+                      department.name AS department,
+                      SUM(salary) AS budget
+               FROM  role  
+               JOIN department ON role.department_id = department.id GROUP BY  department_id`;
+  
+  connection.query(sql, (err, rows) => {
+    if (err) throw err; 
+    console.table(rows);
+
+    options(); 
+  });            
 };
 
 function exitApp() {
