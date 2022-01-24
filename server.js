@@ -432,7 +432,34 @@ function deleteRole () {
 };
 
 function deleteEmployee() {
+  const employeeSql = `SELECT * FROM employee`;
 
+  connection.query(employeeSql, (err, data) => {
+    if (err) throw err; 
+
+  const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " "+ last_name, value: id }));
+
+    inquirer.prompt([
+      {
+        type: 'list',
+        name: 'name',
+        message: "Which employee would you like to delete?",
+        choices: employees
+      }
+    ])
+      .then(empChoice => {
+        const employee = empChoice.name;
+
+        const sql = `DELETE FROM employee WHERE id = ?`;
+
+        connection.query(sql, employee, (err, result) => {
+          if (err) throw err;
+          console.log("Successfully Deleted!");
+        
+          viewEmployees();
+    });
+  });
+ });
 };
 
 function exitApp() {
