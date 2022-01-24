@@ -77,3 +77,12 @@ function viewEmployees() {
       options();
   })
 };
+
+function viewDepartments() {
+  var query = 'SELECT * FROM department';
+  connection.query(query, function(err, res) {
+      if(err)throw err;
+      console.table('All Departments:', res);
+      options();
+  })
+};
