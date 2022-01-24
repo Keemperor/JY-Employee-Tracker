@@ -33,6 +33,7 @@ function options() {
       'Update manager',
       'Delete an employee',
       'Delete a department',
+      'Delete a role',
       'EXIT'
              ]
        }).then(function (answer) {
@@ -70,6 +71,9 @@ function options() {
           case 'Delete a department':
             deleteDepartment ();
             break;
+          case 'Delete a role':
+            deleteRole ();
+              break;
           case 'EXIT': 
             exitApp();
             break;
@@ -392,6 +396,36 @@ function deleteDepartment () {
           console.log("Successfully deleted!"); 
 
         viewDepartments();
+      });
+    });
+  });
+};
+
+function deleteRole () {
+  const roleSql = `SELECT * FROM role`; 
+
+  connection.query(roleSql, (err, data) => {
+    if (err) throw err; 
+
+    const role = data.map(({ title, id }) => ({ name: title, value: id }));
+
+    inquirer.prompt([
+      {
+        type: 'list', 
+        name: 'role',
+        message: "What role do you want to delete?",
+        choices: role
+      }
+    ])
+      .then(roleChoice => {
+        const role = roleChoice.role;
+        const sql = `DELETE FROM role WHERE id = ?`;
+
+        connection.query(sql, role, (err, result) => {
+          if (err) throw err;
+          console.log("Successfully deleted!"); 
+
+          viewRoles();
       });
     });
   });
