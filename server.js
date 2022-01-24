@@ -24,6 +24,7 @@ function options() {
     choices: [
       'View all employees',
       'View all departments',
+      'View all employees by department',
       'View all roles',
       'Add an employee',
       'Add a department',
@@ -43,6 +44,9 @@ function options() {
             break;
           case 'View all roles':
             viewRoles();
+            break;
+          case 'View all employees by department':
+            employeeDepartment ();
             break;
           case 'Add an employee':
             addEmployee();
@@ -343,6 +347,21 @@ function updateManager () {
   });
 };
 
+function employeeDepartment () {
+  console.log('Showing employee by departments...\n');
+  const sql = `SELECT employee.first_name, 
+                      employee.last_name, 
+                      department.name AS department
+               FROM employee 
+               LEFT JOIN role ON employee.role_id = role.id 
+               LEFT JOIN department ON role.department_id = department.id`;
+
+  connection.query(sql, (err, rows) => {
+    if (err) throw err; 
+    console.table(rows); 
+    options();
+  });          
+};
 
 function deleteEmployee() {
 
