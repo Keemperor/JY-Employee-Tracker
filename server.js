@@ -32,6 +32,7 @@ function options() {
       'Update employee role',
       'Update manager',
       'Delete an employee',
+      'Delete a department',
       'EXIT'
              ]
        }).then(function (answer) {
@@ -65,6 +66,9 @@ function options() {
             break;
           case 'Delete an employee':
             deleteEmployee();
+            break;
+          case 'Delete a department':
+            deleteDepartment ();
             break;
           case 'EXIT': 
             exitApp();
@@ -361,6 +365,36 @@ function employeeDepartment () {
     console.table(rows); 
     options();
   });          
+};
+
+function deleteDepartment () {
+  const deptSql = `SELECT * FROM department`; 
+
+  connection.query(deptSql, (err, data) => {
+    if (err) throw err; 
+
+    const dept = data.map(({ name, id }) => ({ name: name, value: id }));
+
+    inquirer.prompt([
+      {
+        type: 'list', 
+        name: 'dept',
+        message: "What department do you want to delete?",
+        choices: dept
+      }
+    ])
+      .then(deptChoice => {
+        const dept = deptChoice.dept;
+        const sql = `DELETE FROM department WHERE id = ?`;
+
+        connection.query(sql, dept, (err, result) => {
+          if (err) throw err;
+          console.log("Successfully deleted!"); 
+
+        viewDepartments();
+      });
+    });
+  });
 };
 
 function deleteEmployee() {
